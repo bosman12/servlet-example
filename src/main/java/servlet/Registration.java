@@ -1,6 +1,6 @@
 package servlet;
 
-import dataSource.DataSource;
+import dataSource.UserDaoImpl;
 import entity.User;
 import service.RegistrationService;
 
@@ -16,14 +16,14 @@ public class Registration extends HttpServlet {
     int id=0;
 
     private RegistrationService userRegistration;
-    private DataSource dataSource;
+    private UserDaoImpl dataSource;
 
     @Override
     public void init() throws ServletException {
         final Object userRegistration = getServletContext().getAttribute("userRegistration");
         this.userRegistration = (RegistrationService) userRegistration;
 
-        this.dataSource = (DataSource) getServletContext().getAttribute("dataSource");
+        this.dataSource = (UserDaoImpl) getServletContext().getAttribute("dataSource");
 
 
     }
@@ -48,8 +48,8 @@ public class Registration extends HttpServlet {
 
         id++;
         User newUser = userRegistration.registration(id, username, name, surname, password, age, email);
-        dataSource.addUsersList(newUser);
-
+        dataSource.addUser(newUser);
+        resp.sendRedirect("/login");
         resp.getWriter().write(USER_REGISTRATION_SUCCESS);
 
 

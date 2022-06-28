@@ -41,7 +41,9 @@
     <input type="submit" value="Отправить">
     <input type="reset" value="Очистить">
 </form>
-
+<form action="/login" method="get">
+    <input type="submit" value="Войти">
+</form>
 
 </body>
 </html>

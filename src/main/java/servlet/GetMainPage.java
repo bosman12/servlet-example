@@ -1,6 +1,6 @@
 package servlet;
 
-import dataSource.DataSource;
+import dataSource.UserDaoImpl;
 import entity.User;
 
 import javax.servlet.ServletException;
@@ -11,13 +11,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 public class GetMainPage extends HttpServlet {
-    private Map<Integer, User> users;
-    private DataSource dataSource;
+    private Map<Integer, User> users = new HashMap() ;
+    private UserDaoImpl dataSource;
 
     @Override
     public void init(){
-        this.dataSource = (DataSource) getServletContext().getAttribute("dataSource");
-        users=new HashMap();
+        this.dataSource = (UserDaoImpl) getServletContext().getAttribute("dataSource");
         users = dataSource.getUserList();
         System.out.println(users);
 

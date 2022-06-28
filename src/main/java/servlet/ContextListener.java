@@ -1,6 +1,7 @@
 package servlet;
 
-import dataSource.DataSource;
+import dataSource.UserDaoImpl;
+import service.AuthenticationService;
 import service.RegistrationService;
 
 import javax.servlet.ServletContext;
@@ -15,7 +16,8 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 public class ContextListener implements ServletContextListener {
     private RegistrationService userRegistration;
-    private DataSource dataSource;
+    private UserDaoImpl dataSource;
+    private AuthenticationService autentificationService;
 
 
     @Override
@@ -23,11 +25,12 @@ public class ContextListener implements ServletContextListener {
         final ServletContext servletContext =
                 servletContextEvent.getServletContext();
 
-
-
+        dataSource = new UserDaoImpl();
+        autentificationService=new AuthenticationService(dataSource);
         userRegistration = new RegistrationService();
-        dataSource = new DataSource();
 
+
+        servletContext.setAttribute("autentificationService",autentificationService);
         servletContext.setAttribute("userRegistration",userRegistration );
         servletContext.setAttribute("dataSource",dataSource);
     }
