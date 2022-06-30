@@ -3,6 +3,7 @@ package servlet;
 import dataSource.UserDaoImpl;
 import service.AuthenticationService;
 import service.RegistrationService;
+import validation.UserValidation;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -18,6 +19,7 @@ public class ContextListener implements ServletContextListener {
     private RegistrationService userRegistration;
     private UserDaoImpl dataSource;
     private AuthenticationService autentificationService;
+    private UserValidation userValidation;
 
 
     @Override
@@ -27,6 +29,7 @@ public class ContextListener implements ServletContextListener {
 
         dataSource = new UserDaoImpl();
         autentificationService=new AuthenticationService(dataSource);
+        userValidation = new UserValidation(dataSource);
         userRegistration = new RegistrationService();
 
 

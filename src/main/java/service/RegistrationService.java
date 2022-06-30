@@ -5,8 +5,8 @@ import entity.User;
 public class RegistrationService {
 
     public User registration(final int id, final String userName,final String name,final String surName,
-                                  final String password, final int age, final String email) {
-        User user = new User(id,userName,name,surName,password,age,email);
+                                  final String password, final int age, final String email,final boolean status) {
+        User user = new User(id,userName,name,surName,password,age,email,status);
         user.setId(id);
         user.setName(userName);
         user.setName(name);
@@ -14,7 +14,7 @@ public class RegistrationService {
         user.setPassword(password);
         user.setAge(age);
         user.setEmail(email);
-
+        user.setStatus(status);
         return user;
     }
 }

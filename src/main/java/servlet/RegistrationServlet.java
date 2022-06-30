@@ -3,6 +3,7 @@ package servlet;
 import dataSource.UserDaoImpl;
 import entity.User;
 import service.RegistrationService;
+import validation.UserValidation;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,21 +11,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class Registration extends HttpServlet {
+public class RegistrationServlet extends HttpServlet {
 
     private static final String USER_REGISTRATION_SUCCESS = "Пользователь успешно зарегистрирован !";
     int id=0;
 
     private RegistrationService userRegistration;
     private UserDaoImpl dataSource;
+    private UserValidation userValidation;
 
     @Override
     public void init() throws ServletException {
-        final Object userRegistration = getServletContext().getAttribute("userRegistration");
-        this.userRegistration = (RegistrationService) userRegistration;
+        final Object registrationService = getServletContext().getAttribute("userRegistration");
+        this.userRegistration = (RegistrationService) registrationService;
 
         this.dataSource = (UserDaoImpl) getServletContext().getAttribute("dataSource");
-
+        userValidation = new UserValidation(dataSource);
 
     }
 
@@ -46,12 +48,13 @@ public class Registration extends HttpServlet {
         int age = Integer.parseInt(req.getParameter("age"));
         String email = req.getParameter("email");
 
-        id++;
-        User newUser = userRegistration.registration(id, username, name, surname, password, age, email);
-        dataSource.addUser(newUser);
-        resp.sendRedirect("/login");
-        resp.getWriter().write(USER_REGISTRATION_SUCCESS);
-
+        User newUser = userRegistration.registration(id, username, name, surname, password, age, email,true);
+        if (userValidation.validateUser(newUser)) {
+            id++;
+            dataSource.addUser(newUser);
+            resp.sendRedirect("/login");
+            resp.getWriter().write(USER_REGISTRATION_SUCCESS);
+        }
 
 
 

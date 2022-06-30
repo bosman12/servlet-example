@@ -5,7 +5,8 @@ import entity.User;
 
 
 public class AuthenticationService {
-    private final UserDaoImpl userDaoImpl;
+    private UserDaoImpl userDaoImpl;
+
 
     public AuthenticationService(UserDaoImpl userDaoImpl) {
         this.userDaoImpl =userDaoImpl  ;
@@ -13,6 +14,7 @@ public class AuthenticationService {
 
     public boolean isAuthenticate(String userName, String password){
         User user = userDaoImpl.findByUserName(userName);
+
         return user.getUserName().equals(userName) && (user.getPassword().equals(password));
     }
 }
